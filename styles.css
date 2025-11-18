@@ -420,6 +420,22 @@ a:hover {
   font-weight: 600;
 }
 
+.skills-grid .card {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.skills-grid h3 {
+  margin-bottom: 0.5rem;
+}
+
+.skills-grid p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 .contact-section {
   position: static;
   margin-top: 2rem;
