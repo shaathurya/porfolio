@@ -33,50 +33,63 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const projectCards = document.querySelectorAll(".project-card");
-  const detailsPanel = document.getElementById("project-details");
-  const detailsContent = detailsPanel?.querySelector(".project-details-content");
-  const detailsCloseBtn = detailsPanel?.querySelector(".project-details-close");
+  const focus = document.getElementById("project-focus");
+  const focusCard = focus ? focus.querySelector(".project-focus-card") : null;
+  const focusContent = focus ? focus.querySelector(".project-focus-content") : null;
+  const focusClose = focus ? focus.querySelector(".project-focus-close") : null;
 
-  const closeDetailsPanel = () => {
-    projectCards.forEach((card) => card.classList.remove("flipped"));
-    if (detailsPanel) {
-      detailsPanel.classList.add("hidden");
-    }
-  };
+  if (focus && focusCard && focusContent && focusClose) {
+    document.querySelectorAll(".project-toggle-front").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const card = btn.closest(".project-card");
+        if (!card) return;
 
-  projectCards.forEach((card) => {
-    const frontBtn = card.querySelector(".project-toggle-front");
-    const backBtn = card.querySelector(".project-toggle-back");
-    const backBody = card.querySelector(".project-back-body");
-
-    if (frontBtn) {
-      frontBtn.addEventListener("click", (event) => {
-        event.preventDefault();
+        const backBody = card.querySelector(".project-back-body");
         projectCards.forEach((c) => c.classList.remove("flipped"));
         card.classList.add("flipped");
-        if (detailsContent && backBody) {
-          detailsContent.innerHTML = backBody.innerHTML;
-        }
-        if (detailsPanel) {
-          detailsPanel.classList.remove("hidden");
-        }
-      });
-    }
 
-    if (backBtn) {
-      backBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        card.classList.remove("flipped");
-        if (detailsPanel) {
-          detailsPanel.classList.add("hidden");
+        if (backBody) {
+          focusContent.innerHTML = backBody.innerHTML;
         }
-      });
-    }
-  });
 
-  if (detailsCloseBtn) {
-    detailsCloseBtn.addEventListener("click", () => {
-      closeDetailsPanel();
+        focus.classList.remove("hidden");
+        setTimeout(() => {
+          focus.classList.add("show");
+        }, 10);
+
+        focus.dataset.activeCard = [...projectCards].indexOf(card).toString();
+      });
+    });
+
+    const closeFocus = () => {
+      const activeIndex = focus.dataset.activeCard;
+      if (activeIndex !== undefined) {
+        const card = projectCards[Number(activeIndex)];
+        if (card) {
+          card.classList.remove("flipped");
+        }
+      }
+
+      focus.classList.remove("show");
+      setTimeout(() => {
+        focus.classList.add("hidden");
+      }, 300);
+    };
+
+    document.querySelectorAll(".project-toggle-back").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeFocus();
+      });
+    });
+
+    focusClose.addEventListener("click", closeFocus);
+
+    focus.addEventListener("click", (e) => {
+      if ((e.target).classList.contains("project-focus-backdrop")) {
+        closeFocus();
+      }
     });
   }
 

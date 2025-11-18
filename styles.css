@@ -318,44 +318,67 @@ a:hover {
   border-color: rgba(255, 255, 255, 0.35);
 }
 
-.project-details {
-  margin-top: 2rem;
-  display: block;
+.project-focus {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.project-details.hidden {
+.project-focus.hidden {
   display: none;
 }
 
-.project-details-inner {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1.75rem 1.5rem;
+.project-focus-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  opacity: 1;
+}
+
+.project-focus-card {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  padding: 1.75rem;
   border-radius: 1rem;
-  background-color: var(--card);
+  background: var(--card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  position: relative;
+  overflow-y: auto;
+  transform: scale(0.9) rotateY(0deg);
+  opacity: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
-.project-details-content h3 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
+.project-focus.show .project-focus-card {
+  transform: scale(1);
+  opacity: 1;
 }
 
-.project-details-content p {
-  margin: 0.25rem 0;
-}
-
-.project-details-close {
+.project-focus-close {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
   border: none;
   background: transparent;
   color: var(--muted);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   cursor: pointer;
+}
+
+.project-focus-content h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.project-focus-content p {
+  margin: 0.35rem 0;
 }
 
 @media (max-width: 768px) {
